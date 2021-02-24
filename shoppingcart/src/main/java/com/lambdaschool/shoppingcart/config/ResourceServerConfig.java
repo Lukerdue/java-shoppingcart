@@ -37,6 +37,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .hasAnyRole("ADMIN")
                 .antMatchers("/logout")
                 .authenticated()
+                .antMatchers("/roles/**")
+                .hasAnyRole("ADMIN")
+                .antMatchers("/products/**")
+                .hasAnyRole("ADMIN")
+                .antMatchers("/carts/**")
+                .authenticated()
 
                 .anyRequest().denyAll()
                 .and().exceptionHandling()
