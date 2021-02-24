@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -53,13 +54,11 @@ public class UserController
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping(value = "/user/{userId}",
+    @GetMapping(value = "/",
         produces = "application/json")
-    public ResponseEntity<?> getUserById(
-        @PathVariable
-            Long userId)
+    public ResponseEntity<?> getUserById()
     {
-        User u = userService.findUserById(userId);
+        User u = userService.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
         return new ResponseEntity<>(u,
             HttpStatus.OK);
     }
